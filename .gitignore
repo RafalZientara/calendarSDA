@@ -39,3 +39,4 @@ out/production/resources/credentials.json
 tokens/
 src/main/resources/credentials.json
 out/
+input/ready/

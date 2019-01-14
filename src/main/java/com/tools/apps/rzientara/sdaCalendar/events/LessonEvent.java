@@ -3,19 +3,25 @@ package com.tools.apps.rzientara.sdaCalendar.events;
 public class LessonEvent {
     public static final String DATE_FORMAT = "%04d-%02d-%02dT%02d:00:00";//-00:00
     private final String groupName;
+    private final String topic;
     private final int day;
     private final int month;
     private final int year;
     private final int hourStart;
     private final int hourEnd;
+    private final int minuteStart;
+    private final int minuteEnd;
 
     public LessonEvent(Builder builder) {
         groupName = builder.groupName;
+        topic = builder.topic;
         day = builder.day;
         month = builder.month;
         year = builder.year;
         hourStart = builder.hourStart;
         hourEnd = builder.hourEnd;
+        minuteStart = builder.minuteStart;
+        minuteEnd = builder.minuteEnd;
     }
 
     public String getGroupName() {
@@ -52,15 +58,23 @@ public class LessonEvent {
 
     public static class Builder {
         private String groupName;
+        private String topic;
         private int day;
         private int month;
         private int year;
         private int hourStart;
         private int hourEnd;
+        private int minuteStart;
+        private int minuteEnd;
 
 
         public Builder setGroupName(String groupName) {
             this.groupName = groupName;
+            return this;
+        }
+
+        public Builder setTopic(String topic) {
+            this.topic = topic;
             return this;
         }
 
@@ -89,8 +103,33 @@ public class LessonEvent {
             return this;
         }
 
+        public Builder setMinuteStart(int minuteStart) {
+            this.minuteStart = minuteStart;
+            return this;
+        }
+
+        public Builder setMinuteEnd(int minuteEnd) {
+            this.minuteEnd = minuteEnd;
+            return this;
+        }
+
         public LessonEvent build() {
             return new LessonEvent(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "LessonEvent{" +
+                "groupName='" + groupName + '\'' +
+                ", topic='" + topic + '\'' +
+                ", day=" + day +
+                ", month=" + month +
+                ", year=" + year +
+                ", hourStart=" + hourStart +
+                ", hourEnd=" + hourEnd +
+                ", minuteStart=" + minuteStart +
+                ", minuteEnd=" + minuteEnd +
+                '}';
     }
 }

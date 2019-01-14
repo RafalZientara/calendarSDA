@@ -14,9 +14,14 @@ package com.tools.apps.rzientara.sdaCalendar;// Copyright 2018 Google LLC
 
 import com.tools.apps.rzientara.sdaCalendar.calendar.GoogleCalendarApi;
 import com.tools.apps.rzientara.sdaCalendar.events.LessonEvent;
+import com.tools.apps.rzientara.sdaCalendar.interactors.ConsoleDecision;
+import com.tools.apps.rzientara.sdaCalendar.reader.CsvLessonLoader;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -24,17 +29,59 @@ public class Main {
         //TODO before use remember to add credentials.json from Google Console to resources
         GoogleCalendarApi calendarApi = new GoogleCalendarApi();
         if (calendarApi.init()) {
-            LessonEvent sampleLesson = new LessonEvent.Builder()
-                    .setDay(14)
-                    .setMonth(1)
-                    .setYear(2019)
-                    .setGroupName("Javawro16")
-                    .setHourStart(9)
-                    .setHourEnd(16)
-                    .build();
-            calendarApi.createLesson(sampleLesson);
+            List<LessonEvent> lessonEvents = loadLessons();
+            if (lessonEvents.isEmpty()) {
+                System.out.println("No lessons to import!");
+            } else {
+                printLessons(lessonEvents);
+
+                System.out.println("Add to google calendar? y/n");
+                ConsoleDecision decision = new ConsoleDecision();
+
+                if (decision.userWantToContinue()) {
+                    createLessons(calendarApi, lessonEvents);
+                }
+            }
         }
     }
 
+    private static List<LessonEvent> loadLessons() {
+        File rootFolder = new File("input/");
+        System.out.println("HOME:" + rootFolder.getAbsolutePath());
+        if (!rootFolder.exists())
+            rootFolder.mkdir();
+        File[] files = rootFolder.listFiles();
+        List<LessonEvent> allLessons = new ArrayList<>();
+        for (File file : files) {
+            System.out.println("Found file: " + file.getName());
+            CsvLessonLoader loader = new CsvLessonLoader(file.getAbsolutePath());
+            allLessons.addAll(loader.loadLessons());
+        }
+        return allLessons;
+    }
+
+    private static void printLessons(List<LessonEvent> lessonEvents) {
+        System.out.println("Prepared list of lessons");
+        for (LessonEvent lessonEvent : lessonEvents) {
+            System.out.println(lessonEvent);
+        }
+    }
+
+    private static void createLessons(GoogleCalendarApi calendarApi, List<LessonEvent> lessonEvents) {
+        for (LessonEvent lessonEvent : lessonEvents) {
+            calendarApi.createLesson(lessonEvent);
+        }
+    }
+
+    private static LessonEvent createSampleLessonEvent() {
+        return new LessonEvent.Builder()
+                .setDay(14)
+                .setMonth(1)
+                .setYear(2019)
+                .setGroupName("Lesson")
+                .setHourStart(9)
+                .setHourEnd(16)
+                .build();
+    }
 
 }
