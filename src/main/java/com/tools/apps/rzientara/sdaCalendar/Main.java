@@ -27,6 +27,7 @@ public class Main {
 
     public static void main(String... args) throws IOException, GeneralSecurityException {
         //TODO before use remember to add credentials.json from Google Console to resources
+        System.out.println("Welcome in Google API tool");
         GoogleCalendarApi calendarApi = new GoogleCalendarApi();
         if (calendarApi.init()) {
             List<LessonEvent> lessonEvents = loadLessons();
