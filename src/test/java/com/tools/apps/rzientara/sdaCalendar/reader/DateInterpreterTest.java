@@ -49,4 +49,18 @@ public class DateInterpreterTest {
         assertEquals(3, interpreter.getDay());
     }
 
+    @Test
+    public void testFormatDate() {
+        // given
+        String date = "03.02.2019";
+
+        // when
+        DateInterpreter interpreter = new DateInterpreter(date);
+
+        // then
+        assertEquals(2019, interpreter.getYear());
+        assertEquals(2, interpreter.getMonth());
+        assertEquals(3, interpreter.getDay());
+    }
+
 }

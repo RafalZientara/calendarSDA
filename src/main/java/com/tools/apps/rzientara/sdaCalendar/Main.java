@@ -1,4 +1,5 @@
-package com.tools.apps.rzientara.sdaCalendar;// Copyright 2018 Google LLC
+package com.tools.apps.rzientara.sdaCalendar;
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,10 +54,16 @@ public class Main {
             rootFolder.mkdir();
         File[] files = rootFolder.listFiles();
         List<LessonEvent> allLessons = new ArrayList<>();
-        for (File file : files) {
-            System.out.println("Found file: " + file.getName());
-            CsvLessonLoader loader = new CsvLessonLoader(file.getAbsolutePath());
-            allLessons.addAll(loader.loadLessons());
+        if (files != null) {
+            for (File file : files) {
+                System.out.println("Found file: " + file.getName());
+                if (file.isFile()) {
+                    CsvLessonLoader loader = new CsvLessonLoader(file.getAbsolutePath());
+                    allLessons.addAll(loader.loadLessons());
+                } else {
+                    System.out.println("Skip directory: " + file.getName());
+                }
+            }
         }
         return allLessons;
     }
@@ -64,8 +71,17 @@ public class Main {
     private static void printLessons(List<LessonEvent> lessonEvents) {
         System.out.println("Prepared list of lessons");
         for (LessonEvent lessonEvent : lessonEvents) {
-            System.out.println(lessonEvent);
+            System.out.println(lessonEvent + isConflict(lessonEvent, lessonEvents));
         }
+    }
+
+    private static String isConflict(LessonEvent currentLesson, List<LessonEvent> lessonEvents) {
+        for (LessonEvent lessonEvent : lessonEvents) {
+            if (lessonEvent != currentLesson && lessonEvent.isTheSameDay(currentLesson)) {
+                return " CONFLICT WITH " + lessonEvent;
+            }
+        }
+        return "";
     }
 
     private static void createLessons(GoogleCalendarApi calendarApi, List<LessonEvent> lessonEvents) {

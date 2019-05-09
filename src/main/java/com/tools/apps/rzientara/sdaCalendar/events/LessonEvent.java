@@ -28,6 +28,10 @@ public class LessonEvent {
         return groupName;
     }
 
+    public String getTopic() {
+        return topic;
+    }
+
     public int getDay() {
         return day;
     }
@@ -54,6 +58,12 @@ public class LessonEvent {
 
     public String getEndDate() {
         return String.format(DATE_FORMAT, year, month, day, hourEnd);
+    }
+
+    public boolean isTheSameDay(LessonEvent lesson) {
+        return lesson.day == day &&
+                lesson.month == month &&
+                lesson.year == year;
     }
 
     public static class Builder {
@@ -123,6 +133,7 @@ public class LessonEvent {
         return "LessonEvent{" +
                 "groupName='" + groupName + '\'' +
                 ", topic='" + topic + '\'' +
+                ", date='" + String.format("%2d.%2d.%4d", day, month, year) + '\'' +
                 ", day=" + day +
                 ", month=" + month +
                 ", year=" + year +

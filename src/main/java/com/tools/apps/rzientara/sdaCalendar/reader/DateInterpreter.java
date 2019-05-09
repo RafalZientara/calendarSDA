@@ -1,9 +1,5 @@
 package com.tools.apps.rzientara.sdaCalendar.reader;
 
-import com.google.api.client.util.DateTime;
-
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,8 +8,10 @@ public class DateInterpreter {
     //    private final static String DATE_REGEX_PATTERN = "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))";//1978-12-20
     private final static String DATE_REGEX_PATTERN = "(\\d{4})-(\\d{2})-(\\d{2})";//1978-12-20
     private final static String DATE2_REGEX_PATTERN = "(\\d{2})-(\\d{2})-(\\d{4})";//03-02-2019
+    private final static String DATE3_REGEX_PATTERN = "(\\d{2})\\.(\\d{2})\\.(\\d{4})";//30.12.2019
     private final static Pattern PATTERN = Pattern.compile(DATE_REGEX_PATTERN);
     private final static Pattern PATTERN_2 = Pattern.compile(DATE2_REGEX_PATTERN);
+    private final static Pattern PATTERN_3 = Pattern.compile(DATE3_REGEX_PATTERN);
     private static final int PARAMETER_NOT_FOUND = -1;
     private final int year;
     private final int month;
@@ -29,6 +27,7 @@ public class DateInterpreter {
 
         Matcher matcher = PATTERN.matcher(date);
         Matcher matcher2 = PATTERN_2.matcher(date);
+        Matcher matcher3 = PATTERN_3.matcher(date);
         if (matcher.find()) {
             year = Integer.parseInt(matcher.group(1));
             month = Integer.parseInt(matcher.group(2));
@@ -37,6 +36,10 @@ public class DateInterpreter {
             day = Integer.parseInt(matcher2.group(1));
             month = Integer.parseInt(matcher2.group(2));
             year = Integer.parseInt(matcher2.group(3));
+        } else if (matcher3.find()) {
+            day = Integer.parseInt(matcher3.group(1));
+            month = Integer.parseInt(matcher3.group(2));
+            year = Integer.parseInt(matcher3.group(3));
         } else {
             year = PARAMETER_NOT_FOUND;
             month = PARAMETER_NOT_FOUND;

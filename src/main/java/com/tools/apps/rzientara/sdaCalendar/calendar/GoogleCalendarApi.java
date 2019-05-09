@@ -16,7 +16,7 @@ import java.util.TimeZone;
 public class GoogleCalendarApi extends BaseGoogleCalendarApi implements CalendarApi {
 
     @Override
-    public String createLesson(LessonEvent lesson) {
+    public void createLesson(LessonEvent lesson) {
         Event event = createEvent(lesson);
         setStartTime(lesson, event);
         setEndTime(lesson, event);
@@ -41,16 +41,14 @@ public class GoogleCalendarApi extends BaseGoogleCalendarApi implements Calendar
                     .insert(PRIMARY_CALENDAR_ID, event)
                     .execute();
             System.out.printf("Event created: %s\n", event.getHtmlLink());
-            return event.getHtmlLink();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     private static Event createEvent(LessonEvent lesson) {
         return new Event()
-                .setSummary(lesson.getGroupName())
+                .setSummary(String.format("%s %s", lesson.getGroupName(), lesson.getTopic()))
                 .setLocation("Wrocław");
     }
 

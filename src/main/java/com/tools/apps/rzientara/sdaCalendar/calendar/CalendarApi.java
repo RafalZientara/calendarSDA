@@ -4,5 +4,5 @@ import com.tools.apps.rzientara.sdaCalendar.events.LessonEvent;
 
 public interface CalendarApi {
 
-    String createLesson(LessonEvent lessonEvent);
+    void createLesson(LessonEvent lessonEvent);
 }

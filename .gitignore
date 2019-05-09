@@ -40,3 +40,4 @@ tokens/
 src/main/resources/credentials.json
 out/
 input/ready/
+input/
