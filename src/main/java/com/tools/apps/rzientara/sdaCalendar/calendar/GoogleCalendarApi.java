@@ -48,7 +48,7 @@ public class GoogleCalendarApi extends BaseGoogleCalendarApi implements Calendar
 
     private static Event createEvent(LessonEvent lesson) {
         return new Event()
-                .setSummary(String.format("%s %s", lesson.getGroupName(), lesson.getTopic()))
+                .setSummary(String.format("%s - %s", lesson.getGroupName(), lesson.getTopic()))
                 .setLocation("Wrocław");
     }
 

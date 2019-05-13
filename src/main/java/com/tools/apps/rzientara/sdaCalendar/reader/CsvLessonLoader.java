@@ -1,6 +1,7 @@
 package com.tools.apps.rzientara.sdaCalendar.reader;
 
 import com.tools.apps.rzientara.sdaCalendar.events.LessonEvent;
+import com.tools.apps.rzientara.sdaCalendar.view.SchedulePrinter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -51,6 +52,8 @@ public class CsvLessonLoader extends BaseLessonLoader {
             e.printStackTrace();
         }
 
+        SchedulePrinter schedulePrinter = new SchedulePrinter(data);
+        schedulePrinter.print();
 
         return data;
     }

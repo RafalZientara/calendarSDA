@@ -61,9 +61,13 @@ public class LessonEvent {
     }
 
     public boolean isTheSameDay(LessonEvent lesson) {
-        return lesson.day == day &&
-                lesson.month == month &&
-                lesson.year == year;
+        return isTheSameDay(lesson.day, lesson.month, lesson.year);
+    }
+
+    public boolean isTheSameDay(int day, int month, int year) {
+        return this.day == day &&
+                this.month == month &&
+                this.year == year;
     }
 
     public static class Builder {

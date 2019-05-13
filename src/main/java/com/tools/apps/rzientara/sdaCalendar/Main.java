@@ -17,6 +17,7 @@ import com.tools.apps.rzientara.sdaCalendar.calendar.GoogleCalendarApi;
 import com.tools.apps.rzientara.sdaCalendar.events.LessonEvent;
 import com.tools.apps.rzientara.sdaCalendar.interactors.ConsoleDecision;
 import com.tools.apps.rzientara.sdaCalendar.reader.CsvLessonLoader;
+import com.tools.apps.rzientara.sdaCalendar.view.SchedulePrinter;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class Main {
             if (lessonEvents.isEmpty()) {
                 System.out.println("No lessons to import!");
             } else {
+                printSchedule(lessonEvents);
                 printLessons(lessonEvents);
 
                 System.out.println("Add to google calendar? y/n");
@@ -56,8 +58,8 @@ public class Main {
         List<LessonEvent> allLessons = new ArrayList<>();
         if (files != null) {
             for (File file : files) {
-                System.out.println("Found file: " + file.getName());
                 if (file.isFile()) {
+                    printHeader("Found file: " + file.getName());
                     CsvLessonLoader loader = new CsvLessonLoader(file.getAbsolutePath());
                     allLessons.addAll(loader.loadLessons());
                 } else {
@@ -66,6 +68,17 @@ public class Main {
             }
         }
         return allLessons;
+    }
+
+    private static void printSchedule(List<LessonEvent> lessonEvents) {
+        printHeader("ALL LESSONS");
+        new SchedulePrinter(lessonEvents).print();
+    }
+
+    private static void printHeader(String header) {
+        System.out.println("===============================================================================");
+        System.out.printf("====================== %33s ======================\n",header);
+        System.out.println("===============================================================================");
     }
 
     private static void printLessons(List<LessonEvent> lessonEvents) {
